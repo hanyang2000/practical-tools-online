@@ -1,0 +1,58 @@
+# ---------- 底部裁剪标记 ----------
+# 若截图内容中出现此文案（通常标记「店铺自营内容」结束、进入无尽推荐流），
+# 则从该文案位置往下全部裁掉；不出现则保持完整截图长度。留空则不裁剪。
+crop_below_text: 逛逛更多宝贝
+# OCR/DOM 命中裁剪标记后，裁剪线向上回退的像素，避免残留标记标题或尾巴。
+crop_margin_top: 40
+
+# ---------- OCR 扫描范围 ----------
+# OCR 只从页面这个比例处开始向下扫描（0.5 = 下半部分），用于定位裁剪标记。
+# 「逛逛更多宝贝」通常在页面下方；若某店该标记偏上，调小此值（如 0.3）。
+ocr_start_fraction: 0.5
+extra_wait_max: 20
+extra_wait_min: 10
+full_page: true
+interval_seconds: 432000
+max_retry_rounds: 3
+max_screenshot_height: 20000
+page_timeout: 30
+retry_interval_seconds: 60
+schedule:
+  hour: 9
+  minute: 0
+  weekdays:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+shops:
+- name: SKII
+  url: https://skii.m.tmall.com/
+- name: OLAY
+  url: https://olay.m.tmall.com/
+- name: 兰蔻
+  url: https://lancome.m.tmall.com/
+- name: 海蓝之谜
+  url: https://lamer.m.tmall.com/
+- name: 理肤泉
+  url: https://larocheposay.m.tmall.com/
+- name: 修丽可
+  url: https://skinceuticals.m.tmall.com/
+- name: 珀莱雅
+  url: https://proya.m.tmall.com/
+- name: 欧莱雅
+  url: https://loreal.m.tmall.com/
+- name: 娇韵诗
+  url: https://clarins.m.tmall.com/
+- name: 雅诗兰黛
+  url: https://esteelauder.m.tmall.com/
+- name: 赫莲娜
+  url: https://helenarubinstein.m.tmall.com/
+- name: 薇诺娜
+  url: http://winona.m.tmall.com/
+viewport:
+  height: 1024
+  width: 574

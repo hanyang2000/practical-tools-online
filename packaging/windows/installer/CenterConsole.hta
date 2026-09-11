@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>实用工具在线版 · 中心控制台</title>
+<hta:application id="centerConsole" applicationname="Practical Tools Online Center Console" icon="CenterConsole.ico" border="thin" caption="yes" contextmenu="no" maximizebutton="yes" minimizebutton="yes" navigable="no" scroll="yes" selection="no" showintaskbar="yes" singleinstance="yes" sysmenu="yes" windowstate="normal">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; min-width: 940px; min-height: 720px; font-family: "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; color: #0f172a; background: #f3f6fa; }
+body { padding: 0; }
+button, input, select { font-family: "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+.shell { width: 100%; min-height: 100%; }
+.header { height: 84px; padding: 16px 28px; color: #ffffff; background: #0f172a; border-bottom: 1px solid #1e293b; }
+.brand { float: left; height: 52px; }
+.brand img { float: left; width: 52px; height: 52px; margin-right: 14px; }
+.brand-copy { float: left; padding-top: 3px; }
+.brand h1 { margin: 0; font-size: 20px; line-height: 28px; font-weight: 650; letter-spacing: .2px; }
+.brand p { margin: 2px 0 0; color: #94a3b8; font-size: 12px; line-height: 18px; }
+.header-status { float: right; margin-top: 7px; padding: 9px 13px; min-width: 190px; border: 1px solid #334155; border-radius: 8px; background: #111d31; }
+.header-status .eyebrow { display: block; margin-bottom: 3px; color: #94a3b8; font-size: 10px; font-weight: 700; letter-spacing: .8px; }
+.header-status strong { display: block; font-size: 12px; font-weight: 600; }
+.status-dot { display: inline-block; width: 8px; height: 8px; margin-right: 7px; border-radius: 50%; background: #94a3b8; vertical-align: 1px; }
+.status-dot.ok { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.14); }
+.status-dot.warn { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,.14); }
+.content { padding: 22px 28px 18px; }
+.section-heading { margin-bottom: 12px; }
+.section-heading h2 { display: inline-block; margin: 0; font-size: 14px; line-height: 22px; font-weight: 700; }
+.section-heading span { margin-left: 8px; color: #64748b; font-size: 11px; }
+.service-row, .lower-row, .metric-row { width: 100%; overflow: hidden; }
+.service-card { float: left; width: calc(50% - 7px); min-height: 146px; padding: 18px 20px; border: 1px solid #dce3ec; border-radius: 12px; background: #ffffff; box-shadow: 0 2px 8px rgba(15,23,42,.04); }
+.service-card + .service-card { float: right; }
+.service-head { min-height: 42px; overflow: hidden; }
+.service-icon { float: left; width: 40px; height: 40px; margin-right: 12px; padding: 9px; color: #0369a1; border-radius: 9px; background: #e8f3fa; }
+.service-icon.tunnel { color: #047857; background: #e8f7f1; }
+.service-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.service-title { float: left; }
+.service-title h3 { margin: 0; font-size: 14px; line-height: 21px; font-weight: 700; }
+.service-title p { margin: 2px 0 0; color: #64748b; font-size: 11px; line-height: 17px; }
+.state-chip { float: right; min-width: 78px; height: 28px; padding: 5px 10px; border: 1px solid #cbd5e1; border-radius: 14px; color: #475569; background: #f8fafc; font-size: 11px; line-height: 16px; text-align: center; font-weight: 650; }
+.state-chip.running { color: #047857; border-color: #a7f3d0; background: #ecfdf5; }
+.state-chip.pending { color: #9a6700; border-color: #fde68a; background: #fffbeb; }
+.service-actions { margin-top: 22px; overflow: hidden; }
+.button { display: inline-block; height: 40px; min-width: 104px; margin: 0 8px 0 0; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 8px; color: #1e293b; background: #ffffff; font-size: 12px; line-height: 38px; font-weight: 650; text-align: center; cursor: pointer; transition: background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease; }
+.button:hover { border-color: #94a3b8; background: #f8fafc; }
+.button:focus, input:focus, select:focus { outline: 2px solid #0284c7; outline-offset: 2px; }
+.button.primary { color: #ffffff; border-color: #0369a1; background: #0369a1; }
+.button.primary:hover { border-color: #075985; background: #075985; }
+.button.success { color: #ffffff; border-color: #047857; background: #047857; }
+.button.success:hover { border-color: #065f46; background: #065f46; }
+.button.danger { color: #b91c1c; border-color: #fecaca; background: #fff7f7; }
+.button.danger:hover { border-color: #fca5a5; background: #fef2f2; }
+.button.small { height: 32px; min-width: 0; padding: 0 12px; line-height: 30px; font-size: 11px; }
+.button:disabled { color: #94a3b8; border-color: #e2e8f0; background: #f1f5f9; cursor: default; box-shadow: none; }
+.performance { margin-top: 20px; }
+.metric-card { float: left; width: calc(20% - 10px); min-height: 112px; margin-right: 12px; padding: 14px 15px; border: 1px solid #dce3ec; border-radius: 10px; background: #ffffff; }
+.metric-card.last { float: right; margin-right: 0; }
+.metric-label { color: #64748b; font-size: 11px; line-height: 17px; }
+.metric-value { margin-top: 5px; color: #0f172a; font: 700 20px Consolas, "SFMono-Regular", monospace; line-height: 28px; }
+.metric-note { margin-top: 1px; color: #94a3b8; font-size: 10px; line-height: 15px; }
+.meter { height: 5px; margin-top: 9px; overflow: hidden; border-radius: 3px; background: #e8ecf1; }
+.meter i { display: block; width: 0; height: 100%; border-radius: 3px; background: #0284c7; transition: width .3s ease; }
+.metric-card.memory .meter i { background: #7c3aed; }
+.metric-card.host .meter i { background: #2563eb; }
+.metric-card.ram .meter i { background: #d97706; }
+.metric-card.disk .meter i { background: #059669; }
+.lower-row { margin-top: 20px; }
+.panel { border: 1px solid #dce3ec; border-radius: 12px; background: #ffffff; box-shadow: 0 2px 8px rgba(15,23,42,.04); }
+.config-panel { float: left; width: calc(58% - 8px); min-height: 288px; padding: 18px 20px; }
+.log-panel { float: right; width: calc(42% - 8px); min-height: 288px; padding: 18px 18px 14px; }
+.panel-title { height: 32px; border-bottom: 1px solid #e8ecf1; }
+.panel-title h2 { float: left; margin: 0; font-size: 14px; line-height: 24px; }
+.panel-title .button { float: right; margin: -4px 0 0; }
+.form-grid { padding-top: 14px; overflow: hidden; }
+.field { float: left; width: calc(50% - 7px); margin-bottom: 13px; }
+.field.right { float: right; }
+.field.full { width: 100%; }
+.field label { display: block; margin-bottom: 6px; color: #334155; font-size: 11px; line-height: 16px; font-weight: 650; }
+.field input, .field select { width: 100%; height: 38px; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 7px; color: #0f172a; background: #ffffff; font-size: 12px; }
+.path-wrap { position: relative; padding-right: 82px; }
+.path-wrap .button { position: absolute; top: 0; right: 0; width: 74px; height: 38px; margin: 0; padding: 0; line-height: 36px; }
+.hint { clear: both; min-height: 32px; padding: 8px 10px; border-radius: 6px; color: #475569; background: #f8fafc; font-size: 10px; line-height: 16px; }
+.config-actions { margin-top: 14px; }
+.config-actions .button { min-width: 122px; }
+.log-box { height: 210px; margin-top: 12px; padding: 12px; overflow: auto; white-space: pre-wrap; word-break: break-all; border-radius: 8px; color: #dbeafe; background: #0b1424; font: 11px/1.55 Consolas, "SFMono-Regular", monospace; }
+.footer { margin-top: 14px; padding: 0 2px; color: #64748b; font-size: 10px; line-height: 18px; }
+.footer strong { color: #334155; }
+.hidden { display: none !important; }
+@media (max-height: 790px) {
+  .content { padding-top: 16px; }
+  .service-card { min-height: 132px; padding-top: 15px; }
+  .service-actions { margin-top: 14px; }
+  .performance { margin-top: 15px; }
+  .lower-row { margin-top: 15px; }
+  .config-panel, .log-panel { min-height: 258px; }
+  .log-box { height: 180px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="header">
+    <div class="brand">
+      <img src="CenterConsoleIcon.png" alt="中心控制台图标">
+      <div class="brand-copy"><h1>中心主机控制台</h1><p>实用工具在线版 · 本机服务与安全通道管理</p></div>
+    </div>
+    <div class="header-status" role="status" aria-live="polite">
+      <span class="eyebrow">控制器状态</span>
+      <strong><span id="controllerDot" class="status-dot warn"></span><span id="controllerState">正在连接后台控制器</span></strong>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section-heading"><h2>服务管理</h2><span>所有操作均在后台运行，不会打开终端窗口</span></div>
+    <div class="service-row">
+      <div class="service-card">
+        <div class="service-head">
+          <div class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="2"></rect><rect x="3" y="14" width="18" height="6" rx="2"></rect><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"></path></svg></div>
+          <div class="service-title"><h3>中心主机服务</h3><p>本机端口 18180 · 数据与任务中心</p></div>
+          <div id="centerChip" class="state-chip">已停止</div>
+        </div>
+        <div class="service-actions"><button id="centerStart" class="button primary" type="button">启动中心</button><button id="centerStop" class="button" type="button">停止中心</button><button id="openWeb" class="button" type="button">打开管理页</button></div>
+      </div>
+      <div class="service-card">
+        <div class="service-head">
+          <div class="service-icon tunnel" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.22 8.2 4.5 4.5 0 0 0 7 18Z"></path><path d="M9 14h6M12 11v6"></path></svg></div>
+          <div class="service-title"><h3>Cloudflare Tunnel</h3><p>外网安全访问通道 · 支持 Token</p></div>
+          <div id="tunnelChip" class="state-chip">已停止</div>
+        </div>
+        <div class="service-actions"><button id="tunnelStart" class="button success" type="button">启动 Tunnel</button><button id="tunnelStop" class="button" type="button">停止 Tunnel</button></div>
+      </div>
+    </div>
+
+    <div class="performance">
+      <div class="section-heading"><h2>实时性能</h2><span id="sampleState">等待首个后台采样</span></div>
+      <div class="metric-row">
+        <div class="metric-card"><div class="metric-label">中心 CPU</div><div id="mCenterCpu" class="metric-value">--</div><div class="metric-note">中心进程占用</div><div class="meter"><i id="bCenterCpu"></i></div></div>
+        <div class="metric-card memory"><div class="metric-label">中心内存</div><div id="mCenterMem" class="metric-value">--</div><div class="metric-note">实际工作集</div><div class="meter"><i id="bCenterMem"></i></div></div>
+        <div class="metric-card host"><div class="metric-label">主机 CPU</div><div id="mHostCpu" class="metric-value">--</div><div class="metric-note">整机平均占用</div><div class="meter"><i id="bHostCpu"></i></div></div>
+        <div class="metric-card ram"><div class="metric-label">主机内存</div><div id="mHostMem" class="metric-value">--</div><div class="metric-note">整机内存占用</div><div class="meter"><i id="bHostMem"></i></div></div>
+        <div class="metric-card disk last"><div class="metric-label">安装盘可用</div><div id="mDisk" class="metric-value">--</div><div class="metric-note">剩余空间比例</div><div class="meter"><i id="bDisk"></i></div></div>
+      </div>
+    </div>
+
+    <div class="lower-row">
+      <div class="panel config-panel">
+        <div class="panel-title"><h2>Tunnel 配置</h2></div>
+        <div class="form-grid">
+          <div class="field"><label for="mode">连接方式</label><select id="mode"><option value="token">Token Tunnel（推荐）</option><option value="quick">临时快速 Tunnel</option><option value="named">命名 Tunnel</option></select></div>
+          <div id="tokenField" class="field right"><label for="token">Tunnel Token</label><input id="token" type="password" autocomplete="off" placeholder="粘贴 Cloudflare Tunnel Token"></div>
+          <div id="nameField" class="field right hidden"><label for="name">Tunnel 名称</label><input id="name" type="text" autocomplete="off" placeholder="例如 practical-center"></div>
+          <div class="field full"><label for="exe">cloudflared 程序路径</label><div class="path-wrap"><input id="exe" type="text" value="cloudflared" placeholder="cloudflared 或 cloudflared.exe 的完整路径"><button id="browse" class="button" type="button">浏览</button></div><input id="filepick" type="file" class="hidden"></div>
+        </div>
+        <div id="hint" class="hint">Token 模式只需粘贴 Cloudflare 提供的 Token；Token 仅作为子进程环境变量传递，不写入日志。</div>
+        <div class="config-actions"><button id="startAll" class="button primary" type="button">启动中心与 Tunnel</button><button id="stopAll" class="button danger" type="button">全部停止并退出</button></div>
+      </div>
+
+      <div class="panel log-panel">
+        <div class="panel-title"><h2>运行动态</h2><button id="clearLog" class="button small" type="button">清空显示</button></div>
+        <div id="log" class="log-box" role="log" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="footer"><strong>Practical Tools Online 0.6.10</strong>　关闭本窗口会自动停止本控制台启动的中心与 Tunnel；日志保存在安装目录的 data\logs。</div>
+  </div>
+</div>
+
+<script language="JScript">
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var shell = new ActiveXObject("WScript.Shell");
+var htaPath = unescape(document.location.pathname.replace(/^\/+/, ""));
+var installerRoot = fso.GetParentFolderName(htaPath);
+var root = fso.GetParentFolderName(installerRoot);
+var dataRoot = fso.BuildPath(root, "data");
+var logRoot = fso.BuildPath(dataRoot, "logs");
+var consoleLog = fso.BuildPath(logRoot, "center-console.log");
+var helperScript = fso.BuildPath(installerRoot, "CenterController.py");
+var pythonwExe = fso.BuildPath(fso.BuildPath(root, "runtime"), "pythonw.exe");
+var sessionId = String(new Date().getTime()) + "-" + String(Math.floor(Math.random() * 100000));
+var statusPath = fso.BuildPath(logRoot, "center-status-" + sessionId + ".txt");
+var commandPath = fso.BuildPath(logRoot, "center-command-" + sessionId + ".txt");
+var centerPidPath = fso.BuildPath(logRoot, "center.pid");
+var tunnelPidPath = fso.BuildPath(logRoot, "tunnel-pid-" + sessionId + ".txt");
+var heartbeatPath = fso.BuildPath(logRoot, "center-heartbeat-" + sessionId + ".txt");
+var closing = false, monitorReady = false, controllerWarningShown = false;
+var centerRunning = false, tunnelRunning = false, centerPhase = "stopped", tunnelPhase = "stopped";
+var centerActionAt = 0, tunnelActionAt = 0, lastSampleAt = 0;
+var centerCpu = null, centerMemoryBytes = null, hostCpu = null, hostMemory = null, memoryTotal = null, diskFree = null;
+
+function el(id) { return document.getElementById(id); }
+function nowMs() { return new Date().getTime(); }
+function clean(value) { return String(value || "").replace(/^\s+|\s+$/g, "").replace(/"/g, ""); }
+function quote(value) { return '"' + clean(value) + '"'; }
+function ensureDirs() { if (!fso.FolderExists(dataRoot)) fso.CreateFolder(dataRoot); if (!fso.FolderExists(logRoot)) fso.CreateFolder(logRoot); }
+function writeText(path, value) { try { ensureDirs(); var s = fso.OpenTextFile(path, 2, true, 0); s.Write(String(value)); s.Close(); return true; } catch (e) { return false; } }
+function readText(path) { try { if (!fso.FileExists(path)) return ""; var s = fso.OpenTextFile(path, 1, false, 0), value = s.ReadAll(); s.Close(); return value; } catch (e) { return ""; } }
+function writeLog(message) { var line = "[" + new Date().toLocaleTimeString() + "] " + message; try { ensureDirs(); var s = fso.OpenTextFile(consoleLog, 8, true, -1); s.WriteLine("[" + new Date().toLocaleString() + "] " + message); s.Close(); } catch (e) {} el("log").innerText += line + "\r\n"; el("log").scrollTop = el("log").scrollHeight; }
+function popup(message, title) { shell.Popup(message, 0, title, 16); }
+function runHelper(argumentsText) { try { shell.Run(quote(pythonwExe) + " " + quote(helperScript) + " " + argumentsText, 0, false); return true; } catch (e) { writeLog("后台控制器启动失败：" + e.message); return false; } }
+function parseStatus(text) { var result = {}, lines = text.split(/\r?\n/), i, pos; for (i = 0; i < lines.length; i++) { pos = lines[i].indexOf("="); if (pos > 0) result[lines[i].substring(0, pos)] = lines[i].substring(pos + 1); } return result; }
+function numberOrNull(value) { if (value === undefined || value === null || value === "") return null; var number = Number(value); return isNaN(number) ? null : number; }
+function pct(value) { return value === null ? "--" : Math.max(0, Math.min(100, value)).toFixed(1) + "%"; }
+function setBar(id, value) { el(id).style.width = (value === null ? 0 : Math.max(0, Math.min(100, value))) + "%"; }
+function setChip(id, phase, running) { var chip = el(id), text = "已停止", className = "state-chip"; if (phase === "starting") { text = "启动中…"; className += " pending"; } else if (phase === "stopping") { text = "停止中…"; className += " pending"; } else if (running) { text = "运行中"; className += " running"; } chip.className = className; chip.innerText = text; }
+
+function startMonitor() {
+  ensureDirs();
+  writeText(heartbeatPath, String(nowMs()));
+  if (!fso.FileExists(helperScript) || !fso.FileExists(pythonwExe)) { popup("后台控制组件不完整，请重新安装程序。", "中心控制台"); return; }
+  runHelper("monitor " + quote(root) + " " + quote(statusPath) + " " + quote(commandPath) + " " + quote(centerPidPath) + " " + quote(tunnelPidPath) + " " + quote(heartbeatPath));
+}
+
+function refresh() {
+  if (closing) return;
+  writeText(heartbeatPath, String(nowMs()));
+  var raw = readText(statusPath), data = parseStatus(raw), previousCenter = centerRunning, previousTunnel = tunnelRunning;
+  if (data.collector === "ok") {
+    monitorReady = true; lastSampleAt = nowMs();
+    centerRunning = data.centerRunning === "1";
+    tunnelRunning = data.tunnelRunning === "1";
+    centerCpu = numberOrNull(data.centerCpu);
+    centerMemoryBytes = numberOrNull(data.centerMemoryBytes);
+    hostCpu = numberOrNull(data.hostCpu);
+    hostMemory = numberOrNull(data.hostMemory);
+    memoryTotal = numberOrNull(data.memoryTotal);
+    diskFree = numberOrNull(data.diskFree);
+    if (centerPhase === "starting" && centerRunning) { centerPhase = "running"; writeLog("中心主机服务已启动。"); }
+    if (centerPhase === "stopping" && !centerRunning) { centerPhase = "stopped"; writeLog("中心主机服务已停止。"); }
+    if (tunnelPhase === "starting" && tunnelRunning) { tunnelPhase = "running"; writeLog("Cloudflare Tunnel 已启动。"); }
+    if (tunnelPhase === "stopping" && !tunnelRunning) { tunnelPhase = "stopped"; writeLog("Cloudflare Tunnel 已停止。"); }
+    if (centerPhase !== "starting" && centerPhase !== "stopping") centerPhase = centerRunning ? "running" : "stopped";
+    if (tunnelPhase !== "starting" && tunnelPhase !== "stopping") tunnelPhase = tunnelRunning ? "running" : "stopped";
+    if (centerPhase === "starting" && nowMs() - centerActionAt > 12000 && !centerRunning) { centerPhase = "stopped"; writeLog("中心启动未成功，请查看 portable-center-error.log。"); }
+    if (tunnelPhase === "starting" && nowMs() - tunnelActionAt > 12000 && !tunnelRunning) { tunnelPhase = "stopped"; writeLog("Tunnel 启动未成功，请查看 cloudflare-tunnel-error.log。"); }
+    if (previousCenter && !centerRunning && centerPhase !== "stopping") writeLog("检测到中心主机服务已退出。");
+    if (previousTunnel && !tunnelRunning && tunnelPhase !== "stopping") writeLog("检测到 Cloudflare Tunnel 已退出。");
+  } else if (!controllerWarningShown && nowMs() - centerActionAt > 8000) {
+    controllerWarningShown = true;
+    writeLog("后台性能控制器尚未返回数据，主操作窗口仍可继续使用。");
+  }
+  if (centerPhase === "starting" && nowMs() - centerActionAt > 15000 && !centerRunning) { centerPhase = "stopped"; writeLog("未能确认中心启动状态，按钮已恢复；请查看 portable-center-error.log。"); }
+  if (tunnelPhase === "starting" && nowMs() - tunnelActionAt > 15000 && !tunnelRunning) { tunnelPhase = "stopped"; writeLog("未能确认 Tunnel 启动状态，按钮已恢复；请查看 cloudflare-tunnel-error.log。"); }
+  render();
+  window.setTimeout(refresh, 1000);
+}
+
+function render() {
+  setChip("centerChip", centerPhase, centerRunning);
+  setChip("tunnelChip", tunnelPhase, tunnelRunning);
+  el("controllerDot").className = "status-dot " + (monitorReady ? "ok" : "warn");
+  el("controllerState").innerText = monitorReady ? "后台控制器正常" : "正在连接后台控制器";
+  el("sampleState").innerText = monitorReady ? "每秒自动刷新 · 无终端窗口" : "等待首个后台采样";
+  el("centerStart").disabled = centerRunning || centerPhase === "starting";
+  el("centerStop").disabled = !centerRunning && centerPhase !== "starting";
+  el("tunnelStart").disabled = tunnelRunning || tunnelPhase === "starting";
+  el("tunnelStop").disabled = !tunnelRunning && tunnelPhase !== "starting";
+  el("mCenterCpu").innerText = centerRunning ? pct(centerCpu) : "--";
+  el("mCenterMem").innerText = centerRunning && centerMemoryBytes !== null ? (centerMemoryBytes / 1048576).toFixed(0) + " MB" : "--";
+  el("mHostCpu").innerText = pct(hostCpu);
+  el("mHostMem").innerText = pct(hostMemory);
+  el("mDisk").innerText = pct(diskFree);
+  setBar("bCenterCpu", centerRunning ? centerCpu : null);
+  setBar("bCenterMem", centerRunning && memoryTotal && centerMemoryBytes !== null ? centerMemoryBytes / memoryTotal * 100 : null);
+  setBar("bHostCpu", hostCpu);
+  setBar("bHostMem", hostMemory);
+  setBar("bDisk", diskFree);
+}
+
+function startCenter() {
+  if (centerRunning || centerPhase === "starting") return;
+  centerPhase = "starting"; centerActionAt = nowMs(); render(); writeLog("正在启动中心主机服务…");
+  if (!runHelper("start-center " + quote(root) + " " + quote(centerPidPath))) centerPhase = "stopped";
+}
+function stopCenter() { if (!centerRunning && centerPhase !== "starting") return; centerPhase = "stopping"; render(); writeLog("正在停止中心主机服务…"); writeText(commandPath, "stop-center"); }
+function startTunnel() {
+  if (tunnelRunning || tunnelPhase === "starting") return;
+  var executable = clean(el("exe").value) || "cloudflared", mode = el("mode").value, name = clean(el("name").value), token = clean(el("token").value);
+  if ((executable.indexOf("\\") >= 0 || executable.indexOf(":") >= 0) && !fso.FileExists(executable)) { popup("未找到 cloudflared，请检查程序路径。", "Tunnel 启动失败"); el("exe").focus(); return; }
+  if (mode === "named" && !name) { popup("请输入命名 Tunnel 的名称。", "Tunnel 启动失败"); el("name").focus(); return; }
+  if (mode === "token" && !token) { popup("请粘贴 Cloudflare Tunnel Token。", "Tunnel 启动失败"); el("token").focus(); return; }
+  tunnelPhase = "starting"; tunnelActionAt = nowMs(); render(); writeLog("正在启动 Cloudflare Tunnel…");
+  var env = shell.Environment("Process"), previousToken = env("TUNNEL_TOKEN");
+  if (mode === "token") env("TUNNEL_TOKEN") = token;
+  var ok = runHelper("start-tunnel " + quote(root) + " " + quote(tunnelPidPath) + " " + quote(executable) + " " + quote(mode) + " " + quote(name));
+  if (mode === "token") env("TUNNEL_TOKEN") = previousToken;
+  if (!ok) tunnelPhase = "stopped";
+}
+function stopTunnel() { if (!tunnelRunning && tunnelPhase !== "starting") return; tunnelPhase = "stopping"; render(); writeLog("正在停止 Cloudflare Tunnel…"); writeText(commandPath, "stop-tunnel"); }
+function openWeb() { shell.Run("http://127.0.0.1:18180", 1, false); }
+function stopAllExit() { if (closing) return; closing = true; writeLog("正在停止全部服务并退出控制台…"); writeText(commandPath, "stop-all-exit"); window.setTimeout(function(){ window.close(); }, 260); }
+function modeChanged() { var mode = el("mode").value; el("tokenField").className = mode === "token" ? "field right" : "field right hidden"; el("nameField").className = mode === "named" ? "field right" : "field right hidden"; el("hint").innerText = mode === "token" ? "Token 模式只需粘贴 Cloudflare 提供的 Token；Token 仅作为子进程环境变量传递，不写入日志。" : mode === "named" ? "命名模式要求本机已完成 Cloudflare 登录，并填写已有 Tunnel 名称。" : "快速模式无需 Token，会生成临时 trycloudflare.com 地址，适合临时测试。"; }
+
+el("centerStart").onclick = startCenter;
+el("centerStop").onclick = stopCenter;
+el("openWeb").onclick = openWeb;
+el("tunnelStart").onclick = startTunnel;
+el("tunnelStop").onclick = stopTunnel;
+el("startAll").onclick = function(){ startCenter(); window.setTimeout(startTunnel, 700); };
+el("stopAll").onclick = stopAllExit;
+el("mode").onchange = modeChanged;
+el("browse").onclick = function(){ el("filepick").click(); };
+el("filepick").onchange = function(){ if (this.value) el("exe").value = this.value; };
+el("clearLog").onclick = function(){ el("log").innerText = ""; writeLog("已清空当前窗口的日志显示。"); };
+window.onerror = function(message, url, line){ writeLog("界面错误：" + message + "（第 " + line + " 行）"); return true; };
+window.onunload = function(){ if (!closing) { closing = true; writeText(commandPath, "stop-all-exit"); } };
+
+try { var width = Math.min(1180, screen.availWidth - 36), height = Math.min(880, screen.availHeight - 36); window.resizeTo(width, height); } catch (e) {}
+modeChanged(); render(); writeLog("中心控制台已启动，正在连接无窗口后台控制器。"); centerActionAt = nowMs(); startMonitor(); window.setTimeout(refresh, 350);
+</script>
+</body>
+</html>

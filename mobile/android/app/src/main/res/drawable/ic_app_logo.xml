@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="64dp" android:height="64dp" android:viewportWidth="64" android:viewportHeight="64">
+    <!-- Practical Tools mark: a rounded blue tile with a clean P / workflow stroke. -->
+    <path android:fillColor="#4054C8" android:pathData="M13,3h38c6.075,0 11,4.925 11,11v36c0,6.075 -4.925,11 -11,11H13C6.925,61 2,56.075 2,50V14C2,7.925 6.925,3 13,3z" />
+    <path android:fillColor="#536DFE" android:pathData="M13,3h38c6.075,0 11,4.925 11,11v5H2v-5C2,7.925 6.925,3 13,3z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M17,17h6v30h-6zM23,17h13c5.523,0 10,4.477 10,10s-4.477,10 -10,10H23v-6h13c2.209,0 4,-1.791 4,-4s-1.791,-4 -4,-4H23z" />
+    <path android:fillColor="#DCE4FF" android:pathData="M44,43h7v4h-7zM44,49h4v4h-4z" />
+</vector>

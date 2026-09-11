@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "practical-tools-online"
+version = "0.6.10"
+description = "策划实用小工具在线中心服务"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1.0",
+  "uvicorn[standard]>=0.30,<1.0",
+  "sqlalchemy>=2.0,<3.0",
+  "alembic>=1.13,<2.0",
+  "psycopg[binary]>=3.2,<4.0",
+  "python-multipart>=0.0.9,<1.0",
+  "openpyxl>=3.1,<4.0",
+  "Pillow>=10.0,<13.0",
+  "PyYAML>=6.0,<7.0",
+  "python-dotenv>=1.0,<2.0",
+  "cos-python-sdk-v5>=1.9.44,<2.0",
+]
+
+[project.optional-dependencies]
+dev = ["httpx>=0.27,<1.0", "pytest>=8.0,<10.0"]
+
+[project.scripts]
+practical-tools-online = "app.main:run"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

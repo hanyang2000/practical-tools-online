@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>页面收集</title>
+<link rel="icon" type="image/png" href="icon.png?v=0.6.0">
+<style>
+/* ===== 蓝色 admin 主题 · 扁平化（参考 Adminator）===== */
+:root {
+  color-scheme: light;
+  --primary: #4f6ef7; --primary-hover: color-mix(in srgb, var(--primary) 85%, #000); --primary-soft: color-mix(in srgb, var(--primary) 10%, transparent);
+  --bg: #f4f5f7; --surface: #ffffff; --surface-2: #f7f8fa;
+  --border: #e6e8ec; --border-strong: #d5d8de;
+  --text: #1e2430; --text-2: #5b6472; --text-3: #8a93a3;
+  --success: #16a34a; --fail: #dc2626; --warning: #f59e0b;
+  --sidebar-bg: #1e2634; --sidebar-text: #aab4c5; --sidebar-muted: #7c8798;
+  --sidebar-line: rgba(255,255,255,.08); --sidebar-hover: rgba(255,255,255,.06);
+  --shadow-sm: 0 1px 2px rgba(16,24,40,.05);
+  --shadow: 0 1px 3px rgba(16,24,40,.06), 0 4px 12px rgba(16,24,40,.05);
+  --shadow-lg: 0 12px 32px rgba(16,24,40,.16);
+  --glass-bg: rgba(255,255,255,.72); --glass-bg-strong: rgba(255,255,255,.86); --glass-hi: rgba(255,255,255,.9);
+  --radius: 10px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --primary: #7c93ff; --primary-hover: color-mix(in srgb, var(--primary) 85%, #fff); --primary-soft: color-mix(in srgb, var(--primary) 16%, transparent);
+  --bg: #141821; --surface: #1e2532; --surface-2: #232a38;
+  --border: #2c3547; --border-strong: #3a455a;
+  --text: #e6e9ef; --text-2: #9aa5b8; --text-3: #8a93a3;
+  --sidebar-bg: #10141c; --sidebar-text: #8f9aad; --sidebar-muted: #667182;
+  --sidebar-line: rgba(255,255,255,.06); --sidebar-hover: rgba(255,255,255,.07);
+  --glass-bg: rgba(30,37,50,.74); --glass-bg-strong: rgba(38,46,60,.86); --glass-hi: rgba(255,255,255,.08);
+}
+/* ===== 8 套主题色板（默认靛蓝）===== */
+:root[data-accent="blue"]   { --primary: #4f83cc; }
+:root[data-accent="teal"]   { --primary: #2fa39a; }
+:root[data-accent="green"]  { --primary: #4c9a5b; }
+:root[data-accent="orange"] { --primary: #d08138; }
+:root[data-accent="rose"]   { --primary: #c25b6e; }
+:root[data-accent="violet"] { --primary: #8563c9; }
+:root[data-accent="pink"]   { --primary: #c05a88; }
+:root[data-theme="dark"][data-accent="blue"]   { --primary: #7aa7e0; }
+:root[data-theme="dark"][data-accent="teal"]   { --primary: #6cc0b8; }
+:root[data-theme="dark"][data-accent="green"]  { --primary: #78b887; }
+:root[data-theme="dark"][data-accent="orange"] { --primary: #e0a86a; }
+:root[data-theme="dark"][data-accent="rose"]   { --primary: #d98d9b; }
+:root[data-theme="dark"][data-accent="violet"] { --primary: #a892d9; }
+:root[data-theme="dark"][data-accent="pink"]   { --primary: #d990b0; }
+/* 自定义主题色（JS 注入） */
+:root[data-accent="custom"] { --primary: var(--accent-custom, #4f6ef7); }
+:root[data-theme="dark"][data-accent="custom"] { --primary: var(--accent-custom-dark, #7c93ff); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; background:
+    radial-gradient(circle at 12% 6%, color-mix(in srgb, var(--primary) 6%, transparent), transparent 42%),
+    radial-gradient(circle at 90% 94%, color-mix(in srgb, var(--primary) 5%, transparent), transparent 40%), var(--bg);
+  height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+header { display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 56px; flex: none;
+  background: var(--surface); border-bottom: 1px solid var(--border); }
+header .title { font-weight: 700; font-size: 16px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+header .title::before { content: ""; width: 4px; height: 18px; border-radius: 2px; background: var(--primary); }
+header .spacer { flex: 1; }
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer; font-size: 13px; font-family: var(--font);
+  background: var(--surface); color: var(--text); transition: all .15s; font-weight: 500; line-height: 1.4; white-space: nowrap; }
+.btn:hover { background: var(--surface-2); border-color: var(--primary); }
+.btn.primary { background: var(--primary); color: #fff; border-color: transparent; box-shadow: 0 1px 2px rgba(16,24,40,.1); }
+.btn.primary:hover { background: var(--primary-hover); }
+.btn.danger { color: var(--fail); }
+.btn.danger:hover { background: rgba(220,38,38,.08); border-color: rgba(220,38,38,.3); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.layout { flex: 1; display: flex; min-height: 0; }
+aside { width: 192px; flex: none; background: linear-gradient(180deg, #232c3d, var(--sidebar-bg)); border-right: 1px solid var(--sidebar-line); overflow-y: auto; padding: 12px 10px; }
+aside .brand { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--sidebar-text); margin-bottom: 2px; }
+aside .brand:hover { background: var(--sidebar-hover); color: #fff; }
+aside .brand.active { background: var(--primary); color: #fff; font-weight: 600; }
+aside .brand .cnt { font-size: 11px; opacity: .8; }
+main { flex: 1; overflow-y: auto; padding: 16px 18px; min-width: 0; }
+
+.filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.filter-bar h2 { font-size: 17px; color: var(--text); font-weight: 700; }
+.filter-bar .date-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; background: var(--surface); color: var(--text-2); border: 1px solid var(--border-strong); }
+.chip:hover { border-color: var(--primary); color: var(--text); }
+.chip.active { background: var(--primary); color: #fff; border-color: transparent; }
+
+.brand-sec { margin-bottom: 20px; content-visibility: auto; contain-intrinsic-size: 260px; }
+.brand-sec h3 { font-size: 14px; color: var(--text); margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.brand-sec h3::before { content: ""; width: 3px; height: 14px; border-radius: 2px; background: var(--primary); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.cell { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-sm); transition: border-color .15s, box-shadow .15s, transform .15s; }
+.cell:hover { border-color: var(--border-strong); box-shadow: var(--shadow); transform: translateY(-1px); }
+.cell img { width: 100%; height: 140px; aspect-ratio: auto !important; object-fit: cover; object-position: center top; display: block; cursor: zoom-in; background: var(--surface-2); opacity: 0; transition: opacity .18s ease; }
+.cell img.is-loaded { opacity: 1; }
+.cell img.is-error { opacity: 1; object-fit: cover; object-position: center top; }
+.cell .meta { padding: 6px 8px; font-size: 11px; color: var(--text-2); display: flex; justify-content: space-between; align-items: center; gap: 4px; }
+.cell .meta .del { color: var(--fail); cursor: pointer; border: none; background: none; font-size: 11px; font-family: var(--font); padding: 0; }
+.cell .ck { position: absolute; top: 6px; left: 6px; width: 17px; height: 17px; accent-color: var(--primary); z-index: 2; }
+.empty { text-align: center; color: var(--text-3); padding: 60px 0; }
+
+/* 灯箱（始终深色） */
+#lightbox { display: none; position: fixed; inset: 0; background: rgba(10,12,18,.93); z-index: 100; flex-direction: column; }
+#lightbox.on { display: flex; }
+#lb-top { display: flex; align-items: center; gap: 8px; padding: 10px 16px; flex: none;
+  background: rgba(18,20,28,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+#lb-top .lb-title { flex: 1; color: #cbd5e1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lb-btn { padding: 6px 13px; border: 1px solid rgba(255,255,255,.14); border-radius: 8px; background: rgba(255,255,255,.08); color: #fff; cursor: pointer; font-size: 13px; font-family: var(--font); }
+.lb-btn:hover { background: rgba(255,255,255,.18); }
+#lb-stage { flex: 1; overflow: auto; display: block; text-align: center; padding: 20px; position: relative; }
+#lb-stage[data-loading="1"]::after { content: "正在加载原图…"; position: absolute; inset: 20px; display: grid; place-items: center; color: rgba(255,255,255,.72); font-size: 13px; pointer-events: none; }
+#lb-stage[data-loading="error"]::after { content: "原图加载失败，当前显示缩略图"; position: absolute; inset: 20px; display: grid; place-items: center; color: rgba(255,255,255,.72); font-size: 13px; pointer-events: none; }
+#lb-stage img.lb-thumb { opacity: .78; filter: blur(.35px); }
+#lb-stage img { display: inline-block; height: auto; min-width: 200px; }
+
+/* 浮层 */
+.float-panel { display: none; position: fixed; top: 64px; right: 16px; width: 360px; max-height: 74vh; z-index: 200;
+  background: var(--glass-bg-strong); backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%);
+  border: 1px solid var(--border); border-radius: 14px; box-shadow: inset 0 1px 0 var(--glass-hi), var(--shadow-lg); overflow: visible; }
+.float-panel.on { display: block; }
+.fp-head { display: flex; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--border); border-radius: 14px 14px 0 0; font-weight: 600; color: var(--text); font-size: 14px; background: var(--surface-2); }
+.fp-head .fp-close { margin-left: auto; cursor: pointer; border: none; background: none; color: var(--text-3); font-size: 16px; }
+.fp-body { padding: 14px; }
+.prog-row { margin-bottom: 12px; }
+.prog-row label { font-size: 12px; color: var(--text-2); display: block; margin-bottom: 4px; }
+.prog-track { height: 8px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--border); overflow: hidden; }
+.prog-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width .3s; }
+.stat-line { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 13px; }
+.cfg-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.cfg-row input, .cfg-row select { padding: 8px 13px; border: 1px solid var(--border-strong); border-radius: 8px; font-size: 13.5px; font-family: var(--font); background: var(--surface); color: var(--text); transition: border-color .15s, box-shadow .15s; }
+.cfg-row input { width: 90px; }
+.cfg-row input:focus, .cfg-row select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.muted { color: var(--text-2); font-size: 12px; }
+.row { display: flex; gap: 8px; margin-bottom: 10px; }
+
+.modal-mask { display: none; position: fixed; inset: 0; background: rgba(16,24,40,.4); z-index: 300; align-items: center; justify-content: center; }
+.modal-mask.on { display: flex; }
+.modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; background: var(--glass-bg-strong); backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid var(--border); border-radius: 14px; width: 500px; max-width: 92vw; max-height: 82vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: inset 0 1px 0 var(--glass-hi), var(--shadow-lg); }
+.mhead { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid var(--border); border-radius: 14px 14px 0 0; cursor: move; font-weight: 600; font-size: 15px; color: var(--text); background: var(--surface-2); user-select: none; }
+.mclose { cursor: pointer; border: none; background: none; color: var(--text-3); font-size: 18px; line-height: 1; padding: 2px 6px; border-radius: 6px; }
+.mclose:hover { background: var(--surface-2); color: var(--text); }
+.mbody { flex: 1; overflow-y: auto; padding: 16px; min-height: 0; }
+.mfoot { flex: none; display: flex; justify-content: flex-end; gap: 8px; padding: 0 16px 16px; }
+.modal input, .modal select { padding: 8px 13px; border: 1px solid var(--border-strong); border-radius: 8px; font-size: 13.5px; font-family: var(--font); background: var(--surface); color: var(--text); transition: border-color .15s, box-shadow .15s; }
+.modal input:focus, .modal select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.modal .shop { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; }
+.modal .shop .url { color: var(--text-2); font-size: 11px; }
+.modal .shop .del { color: var(--fail); cursor: pointer; font-size: 13px; }
+.divider { border-top: 1px solid var(--border); margin: 14px 0; }
+.dropdown { position: relative; }
+.dropdown-menu { display: none; position: absolute; top: 100%; left: 0; z-index: 60; min-width: 150px; max-height: 220px; overflow-y: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-lg); padding: 6px; margin-top: 4px; }
+.dropdown-menu.open { display: block; }
+.dropdown-menu label { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.dropdown-menu label:hover { background: var(--surface-2); }
+.dropdown-menu input { width: auto; accent-color: var(--primary); }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+@media (max-width: 720px) {
+  body { min-height: 100dvh; height: auto; overflow: auto; }
+  header { min-height: 56px; height: auto; padding: 8px 10px; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+  header::-webkit-scrollbar { display: none; }
+  header .title { flex: none; min-height: 48px; }
+  header .spacer { display: none; }
+  header .btn { min-height: 48px; padding: 8px 12px; }
+  .layout { min-height: calc(100dvh - 64px); flex-direction: column; }
+  aside { width: 100%; max-height: 76px; display: flex; gap: 8px; padding: 8px 10px; overflow-x: auto; overflow-y: hidden; border-right: 0; border-bottom: 1px solid var(--sidebar-line); scrollbar-width: none; }
+  aside::-webkit-scrollbar { display: none; }
+  aside .brand { flex: 0 0 auto; min-width: 104px; min-height: 48px; justify-content: center; margin: 0; padding: 9px 12px; }
+  main { padding: 12px 10px calc(20px + env(safe-area-inset-bottom)); overflow-x: hidden; }
+  .filter-bar { align-items: stretch; gap: 8px; }
+  .filter-bar h2 { flex: 1 0 100%; }
+  .chip { min-height: 40px; display: inline-flex; align-items: center; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .cell img { height: clamp(104px, 30vw, 150px); }
+  .cell .meta { min-height: 40px; padding: 7px 8px; }
+  .cell .meta .del { min-width: 44px; min-height: 36px; }
+  .float-panel { left: 10px; right: 10px; top: 68px; width: auto; max-height: calc(100dvh - 82px); overflow-y: auto; }
+  .modal-mask { padding: 10px; align-items: flex-end; }
+  .modal { width: 100% !important; max-width: none; max-height: calc(100dvh - 20px); border-radius: 16px 16px 12px 12px; }
+  .mfoot { padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .mfoot .btn, .modal .btn { min-height: 48px; }
+  .row, .cfg-row { flex-wrap: wrap; }
+  .row > input, .row > select, .cfg-row input, .cfg-row select { flex: 1 1 100%; width: 100% !important; min-width: 0; min-height: 48px; }
+  #lb-top { padding: calc(8px + env(safe-area-inset-top)) 10px 8px; flex-wrap: wrap; }
+  #lb-top .lb-title { flex: 1 0 100%; min-width: 0; }
+  .lb-btn { min-height: 48px; padding: 8px 14px; }
+  #lb-stage { padding: 8px; }
+  #lb-stage img { max-width: 100%; min-width: 0; height: auto; }
+}
+/* 移动端产品化视觉层：与 Android 工作台保持同一套层级、圆角和触控节奏 */
+header {
+  background: linear-gradient(110deg, color-mix(in srgb, var(--primary) 9%, var(--surface)), var(--surface));
+  box-shadow: 0 4px 18px rgba(16,24,40,.06);
+}
+header .title { letter-spacing: .2px; }
+aside { background: linear-gradient(180deg, #202d47, #151d2e); }
+aside .brand { border: 1px solid transparent; transition: background .18s, border-color .18s, transform .18s; }
+aside .brand.active { box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 24%, transparent); }
+main { background: radial-gradient(circle at 90% 0, color-mix(in srgb, var(--primary) 6%, transparent), transparent 34%); }
+.filter-bar { padding: 12px 14px; border: 1px solid var(--border); border-radius: 16px; background: var(--glass-bg); box-shadow: var(--shadow-sm); }
+.cell { border-radius: 16px; box-shadow: var(--shadow); }
+.cell img { height: 160px; }
+.float-panel, .modal { border-radius: 18px; }
+@media (max-width: 720px) {
+  header { position: sticky; top: 0; z-index: 80; min-height: 64px; }
+  header .title { font-size: 17px; white-space: nowrap; min-width: max-content; flex: 0 0 auto; }
+  aside { border-radius: 0 0 16px 16px; box-shadow: 0 5px 18px rgba(16,24,40,.12); }
+  main { padding-top: 14px; }
+  .filter-bar { padding: 12px; }
+  .cell { border-radius: 14px; }
+  .cell img { height: clamp(118px, 34vw, 168px); }
+}
+/* WebView 真机兜底：禁止桌面侧栏在窄屏中继续占满高度 */
+@media (max-width: 720px) {
+  .layout { display: flex !important; flex-direction: column !important; min-height: 0 !important; }
+  aside { width: 100% !important; height: 72px !important; max-height: 72px !important; min-height: 72px !important; display: flex !important; flex-direction: row !important; align-items: stretch !important; padding: 8px 10px !important; overflow-x: auto !important; overflow-y: hidden !important; }
+  aside .brand { flex: 0 0 auto !important; min-width: 104px !important; height: 48px !important; min-height: 48px !important; margin: 0 !important; white-space: nowrap !important; }
+  main { min-height: calc(100dvh - 136px) !important; }
+}
+/* 暗色下：白字实底主色元素改半透明，保证对比度 */
+:root[data-theme="dark"] .btn.primary,
+:root[data-theme="dark"] .chip.active,
+:root[data-theme="dark"] aside .brand.active { background: color-mix(in srgb, var(--primary) 30%, transparent); color: #fff; }
+</style>
+</head>
+<body>
+<header>
+  <div class="title">页面收集</div>
+  <div class="spacer"></div>
+  <button class="btn" onclick="openProgress()">进度</button>
+  <button class="btn" onclick="openScheduler()">定时任务</button>
+  <button class="btn primary" onclick="openCapture()">触发截图</button>
+  <button class="btn" onclick="openShops()">店铺管理</button>
+  <button class="btn" onclick="doLogin()">登录淘宝</button>
+  <button class="btn" onclick="openImagesFolder()">图片文件夹</button>
+  <button class="btn danger" id="btn-del" onclick="deleteSelected()" disabled>删除选中</button>
+</header>
+<div class="layout">
+  <aside id="brands"></aside>
+  <main id="main"><div class="empty">加载中…</div></main>
+</div>
+
+<div id="lightbox">
+  <div id="lb-top">
+    <div class="lb-title" id="lb-title"></div>
+    <button class="lb-btn" onclick="zoomOut()">缩小</button>
+    <button class="lb-btn" id="lb-zoom-label" onclick="zoomReset()">30%</button>
+    <button class="lb-btn" onclick="zoomIn()">放大</button>
+    <button class="lb-btn" onclick="step(-1)">上一张</button>
+    <button class="lb-btn" onclick="step(1)">下一张</button>
+    <button class="lb-btn" onclick="closeLb()">关闭</button>
+  </div>
+  <div id="lb-stage"><img id="lb-img" src="" alt=""></div>
+</div>
+
+<div class="float-panel" id="fp-progress">
+  <div class="fp-head" data-drag="fp-progress">截图进度<button class="fp-close" title="关闭" aria-label="关闭" onclick="closeProgress()">×</button></div>
+  <div class="fp-body">
+    <div class="stat-line"><b id="pg-status">空闲</b><span class="spacer" style="flex:1"></span><button class="btn" id="btn-pause" onclick="togglePause()" style="display:none">暂停</button></div>
+    <div class="prog-row"><label>店铺进度 <span id="pg-shop"></span></label><div class="prog-track"><div class="prog-fill" id="pg-bar" style="width:0%"></div></div></div>
+    <div class="muted" id="pg-detail">当前没有截图任务</div>
+  </div>
+</div>
+
+<div class="float-panel" id="fp-scheduler">
+  <div class="fp-head" data-drag="fp-scheduler">定时任务<button class="fp-close" title="关闭" aria-label="关闭" onclick="closeScheduler()">×</button></div>
+  <div class="fp-body">
+    <div class="stat-line">状态：<b id="sch-status">加载中…</b></div>
+    <div class="muted" id="sch-detail" style="margin-bottom:12px"></div>
+    <div class="cfg-row" style="margin-top:6px">
+      <span>星期</span>
+      <div class="dropdown">
+        <button class="btn" onclick="toggleWdPopup(event)"><span id="wd-label">每天</span> ▾</button>
+        <div class="dropdown-menu" id="wd-menu">
+          <label><input type="checkbox" value="1" onchange="onWdChange()"> 周一</label>
+          <label><input type="checkbox" value="2" onchange="onWdChange()"> 周二</label>
+          <label><input type="checkbox" value="3" onchange="onWdChange()"> 周三</label>
+          <label><input type="checkbox" value="4" onchange="onWdChange()"> 周四</label>
+          <label><input type="checkbox" value="5" onchange="onWdChange()"> 周五</label>
+          <label><input type="checkbox" value="6" onchange="onWdChange()"> 周六</label>
+          <label><input type="checkbox" value="7" onchange="onWdChange()"> 周日</label>
+        </div>
+      </div>
+    </div>
+    <div class="cfg-row"><span>时间</span><input type="number" id="sch-hour" min="0" max="23" style="width:60px"><span>时</span><input type="number" id="sch-minute" min="0" max="59" style="width:60px"><span>分</span></div>
+    <div class="row" style="margin-top:12px"><button class="btn primary" onclick="installScheduler()">保存并安装</button><button class="btn danger" onclick="uninstallScheduler()">卸载</button></div>
+  </div>
+</div>
+
+<div class="modal-mask" id="capture-modal">
+  <div class="modal">
+    <div class="mhead" data-drag="capture-modal">触发截图<button class="mclose" title="关闭" aria-label="关闭" onclick="closeCapture()">×</button></div>
+    <div class="mbody">
+      <button class="btn primary" style="width:100%;margin-bottom:6px" onclick="captureAll()">全部店铺截图</button>
+      <div class="divider"></div>
+      <div class="row"><select id="cap-shop" style="flex:1"></select><button class="btn" onclick="captureShop()">截图该店铺</button></div>
+      <div class="divider"></div>
+      <div class="row"><input id="cap-url" placeholder="店铺链接 https://xxx.m.tmall.com/" style="flex:1"><input id="cap-name" placeholder="名称（可选）" style="width:110px"></div>
+      <div class="row"><span class="spacer" style="flex:1"></span><button class="btn primary" onclick="captureUrl()">截图该链接</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask" id="shops-modal">
+  <div class="modal">
+    <div class="mhead" data-drag="shops-modal">店铺管理<button class="mclose" title="关闭" aria-label="关闭" onclick="closeShops()">×</button></div>
+    <div class="mbody">
+      <div class="row"><input id="new-name" placeholder="店铺名称" style="flex:1"><input id="new-url" placeholder="链接" style="flex:2"><button class="btn primary" onclick="addShop()">添加</button></div>
+      <div id="shop-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask" id="login-modal">
+  <div class="modal" style="width:380px">
+    <div class="mhead" data-drag="login-modal">登录淘宝<button class="mclose" title="关闭" aria-label="关闭" onclick="document.getElementById('login-modal').classList.remove('on')">×</button></div>
+    <div class="mbody">
+      <div id="login-hint" class="muted" style="margin-bottom:14px">正在通知本机 Agent 打开登录浏览器…</div>
+    </div>
+    <div class="mfoot"><button class="btn" onclick="document.getElementById('login-modal').classList.remove('on')">取消</button><button class="btn primary" onclick="completeLogin()">完成登录</button></div>
+  </div>
+</div>
+
+<script>
+const LB_DEFAULT = 0.3, LB_MIN = 0.2, LB_MAX = 10;  // 默认 30%，范围 20%~1000%
+let allBrands = [], currentBrand = null, currentDate = null, flatList = [], lbIndex = -1, lbZoom = LB_DEFAULT;
+let selected = new Set(), loadInFlight = false, loadTimer = null, lastListSignature = '', lastListRevision = '';
+const THUMB_CACHE_NAME = 'screenshot-thumbnails-v2';
+const thumbObjectUrls = new Map(), thumbLoads = new Map();
+let thumbCacheReady = null;
+let thumbObserver = null;
+const ORIGINAL_CACHE_NAME = 'screenshot-originals-session-v1';
+const originalObjectUrls = new Map(), originalLoads = new Map();
+const MAX_ORIGINAL_OBJECTS = 5;
+let originalCacheReady = null, originalCacheClearing = null, lightboxRequestId = 0;
+const REQUEST_TIMEOUT_MS = 15000;
+const LB_PLACEHOLDER = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240"%3E%3Crect width="320" height="240" fill="%23202733"/%3E%3Cpath d="M112 164l31-37 25 29 24-29 38 37z" fill="%2364748b"/%3E%3Ccircle cx="184" cy="91" r="16" fill="%2364748b"/%3E%3C/svg%3E';
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtSize(n){return n>1048576?(n/1048576).toFixed(1)+'M':Math.round(n/1024)+'K';}
+async function apiJson(url, options={}){
+  const request = {credentials:'same-origin', ...options};
+  if(String(request.method||'GET').toUpperCase() === 'GET') request.cache = 'no-store';
+  const response = await fetch(url, request);
+  const data = await response.json().catch(() => ({}));
+  if(!response.ok) throw new Error(data.detail || data.error || `请求失败（${response.status}）`);
+  return data;
+}
+function showApiError(error, fallback='操作失败，请稍后重试'){
+  alert(error?.message || fallback);
+}
+
+async function load(force=false){
+  if (loadInFlight || document.visibilityState !== 'visible') return;
+  loadInFlight = true;
+  const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    if(!force && lastListRevision){
+      const marker = await fetch('/api/screenshot/revision', {credentials:'same-origin', cache:'no-store', signal:controller.signal});
+      const revisionBody = await marker.json().catch(() => ({}));
+      if(marker.ok && revisionBody.revision === lastListRevision) return;
+    }
+    const r = await fetch('/api/screenshot/list', {credentials:'same-origin', signal:controller.signal});
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(d.detail || d.error || `请求失败（${r.status}）`);
+    const nextBrands = d.brands||[], signature = JSON.stringify(nextBrands);
+    lastListRevision = String(d.revision || '');
+    if(signature !== lastListSignature){ lastListSignature = signature; allBrands = nextBrands; renderBrands(); renderMain(); }
+  } catch (e) {
+    const main = document.getElementById('main');
+    if (main && !allBrands.length) main.innerHTML = `<div class="empty">${e.name === 'AbortError' ? '网络响应超时，请稍后重试' : '截图服务暂时不可用，请稍后重试'}</div>`;
+  } finally { clearTimeout(timeout); loadInFlight = false; }
+}
+function renderBrands(){
+  const total = allBrands.reduce((s,b)=>s+b.count,0);
+  let h = `<div class="brand ${currentBrand===null?'active':''}" onclick="filter(null)"><span>全部</span><span class="cnt">${total}</span></div>`;
+  for(const b of allBrands) h += `<div class="brand ${currentBrand===b.brand?'active':''}" onclick="filter('${esc(b.brand)}')"><span>${esc(b.brand)}</span><span class="cnt">${b.count}</span></div>`;
+  document.getElementById('brands').innerHTML = h;
+}
+function captureTime(image){
+  const value = Date.parse(image?.captured_at || `${image?.date || ''}T00:00:00Z`);
+  return Number.isFinite(value) ? value : 0;
+}
+function sortImages(images){
+  return [...(images || [])].sort((a,b)=>captureTime(b)-captureTime(a) || String(b.path||'').localeCompare(String(a.path||'')));
+}
+function renderMain(){
+  const main = document.getElementById('main'); flatList = [];
+  if(currentBrand === null){
+    if(!allBrands.length){ main.innerHTML='<div class="empty">暂无截图</div>'; return; }
+    let h='';
+    for(const b of allBrands){
+      const imgs = sortImages(b.dates.flatMap(d=>d.images));
+      h += `<div class="brand-sec"><h3>${esc(b.brand)}（${imgs.length} 张）</h3><div class="grid">`+imgs.map(cellHtml).join('')+'</div></div>';
+    }
+    main.innerHTML = h;
+    bindThumbnails(main);
+  } else {
+    const b = allBrands.find(x=>x.brand===currentBrand);
+    if(!b){ main.innerHTML='<div class="empty">暂无截图</div>'; return; }
+    const dates = [...b.dates].sort((a,b)=>b.date.localeCompare(a.date));
+    // currentDate 为 null 时展示该品牌全部日期（不再自动跳到第一个日期）
+    const imgs = sortImages(currentDate ? (b.dates.find(d=>d.date===currentDate)?.images||[]) : b.dates.flatMap(d=>d.images));
+    let h = `<div class="filter-bar"><h2>${esc(b.brand)}</h2><div class="date-chips"><div class="chip ${currentDate===null?'active':''}" onclick="filterDate(null)">全部日期</div>`;
+    for(const dt of dates) {
+      const date = String(dt.date || '');
+      h += `<div class="chip ${currentDate===date?'active':''}" onclick="filterDate('${esc(date)}')">${esc(date)}</div>`;
+    }
+    h += '</div></div><div class="grid">'+imgs.map(cellHtml).join('')+'</div>';
+    if(!imgs.length) h += '<div class="empty">该日期暂无截图</div>';
+    main.innerHTML = h;
+    bindThumbnails(main);
+  }
+}
+function cellHtml(im){
+  flatList.push(im); const idx = flatList.length-1;
+  const ratio = im.width > 0 && im.height > 0 ? `${Math.min(Math.max(im.width / im.height, .35), 3)}` : '1.3333';
+  const thumb = `/api/screenshot/thumb?path=${encodeURIComponent(im.path)}&size=320`;
+  const canDelete = im.can_delete === true;
+  return `<div class="cell">
+    <input type="checkbox" class="ck" data-path="${esc(im.path)}" ${selected.has(im.path)?'checked':''} ${canDelete?'':'disabled title="只能查看，不能删除"'} onchange="toggleSel(this)">
+    <img data-thumb-url="${esc(thumb)}" data-ratio="${ratio}" data-image-path="${esc(im.path)}" alt="${esc(im.file||'截图')}" onclick="openLbPath(this.dataset.imagePath)" loading="lazy" decoding="async" fetchpriority="low">
+    <div class="meta"><span>${esc(im.date)}</span><span>${fmtSize(im.size)}</span>${canDelete?`<button class="del" onclick="delOne('${esc(im.path)}')">删除</button>`:'<span class="muted" title="只能查看，不能删除">只读</span>'}</div>
+  </div>`;
+}
+function bindThumbnails(root){
+  if(thumbObserver) thumbObserver.disconnect();
+  const imgs = [...root.querySelectorAll('img[data-thumb-url]')];
+  imgs.forEach(img => {
+    const ratio = Number(img.dataset.ratio);
+    if(Number.isFinite(ratio)) img.style.aspectRatio = ratio;
+  });
+  if(!('IntersectionObserver' in window)) { imgs.forEach(loadThumbnail); return; }
+  thumbObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if(entry.isIntersecting){ loadThumbnail(entry.target); thumbObserver.unobserve(entry.target); }
+  }), { root: document.getElementById('main'), rootMargin: '480px 0px' });
+  imgs.forEach(img => thumbObserver.observe(img));
+}
+async function loadThumbnail(img){
+  if(!img || img.dataset.loading === '1' || img.classList.contains('is-loaded')) return;
+  const url = img.dataset.thumbUrl; if(!url) return;
+  img.dataset.loading = '1';
+  try {
+    let objectUrl = thumbObjectUrls.get(url);
+    if(!objectUrl){
+      let pending = thumbLoads.get(url);
+      if(!pending){
+        pending = (async() => {
+          let response;
+          if('caches' in window){
+            if(!thumbCacheReady) thumbCacheReady = caches.open(THUMB_CACHE_NAME);
+            const cache = await thumbCacheReady;
+            response = await cache.match(url);
+            if(!response){
+              response = await fetch(url, {credentials:'same-origin', cache:'no-store'});
+              if(response.ok) await cache.put(url, response.clone());
+            }
+          } else response = await fetch(url, {credentials:'same-origin'});
+          if(!response || !response.ok) throw new Error('thumbnail request failed');
+          return URL.createObjectURL(await response.blob());
+        })().finally(() => thumbLoads.delete(url));
+        thumbLoads.set(url, pending);
+      }
+      objectUrl = await pending; thumbObjectUrls.set(url, objectUrl);
+    }
+    img.src = objectUrl; img.classList.add('is-loaded');
+  } catch(e) {
+    // Cache API may be unavailable in an embedded browser; the normal image
+    // request remains a safe fallback and still benefits from HTTP caching.
+    img.src = url; img.classList.add('is-error');
+  } finally { img.dataset.loading = '0'; }
+}
+function filter(brand){ currentBrand=brand; currentDate=null; renderBrands(); renderMain(); }
+function filterDate(date){ currentDate=date; renderMain(); }
+
+// 灯箱
+function originalUrl(im){ return `/api/screenshot/file?path=${encodeURIComponent(im.path)}`; }
+async function prepareOriginalCache(){
+  if(!('caches' in window)) return null;
+  if(!originalCacheReady) originalCacheReady = (originalCacheClearing || Promise.resolve()).then(() => caches.open(ORIGINAL_CACHE_NAME));
+  return originalCacheReady;
+}
+async function cacheOriginal(im){
+  if(!im) return null;
+  const url = originalUrl(im);
+  if(originalObjectUrls.has(url)) return originalObjectUrls.get(url);
+  let pending = originalLoads.get(url);
+  if(!pending){
+    pending = (async() => {
+      let response;
+      const cache = await prepareOriginalCache();
+      if(cache){
+        response = await cache.match(url);
+        if(!response){
+          response = await fetch(url, {credentials:'same-origin', cache:'no-store'});
+          if(response.ok) await cache.put(url, response.clone());
+        }
+      } else response = await fetch(url, {credentials:'same-origin', cache:'no-store'});
+      if(!response || !response.ok) throw new Error('original request failed');
+      return URL.createObjectURL(await response.blob());
+    })().finally(() => originalLoads.delete(url));
+    originalLoads.set(url, pending);
+  }
+  const result = await pending;
+  if(typeof result === 'string') rememberOriginal(url, result);
+  return result;
+}
+function trimOriginalObjects(){
+  const keep = new Set();
+  for(const offset of [0, 1, -1, 2, -2]){
+    const target = flatList[lbIndex + offset];
+    if(target) keep.add(originalUrl(target));
+  }
+  for(const [url, objectUrl] of originalObjectUrls){
+    if(!keep.has(url) && originalObjectUrls.size > MAX_ORIGINAL_OBJECTS){
+      URL.revokeObjectURL(objectUrl); originalObjectUrls.delete(url);
+    }
+  }
+}
+function rememberOriginal(url, objectUrl){
+  originalObjectUrls.delete(url);
+  originalObjectUrls.set(url, objectUrl);
+  trimOriginalObjects();
+}
+let preloadTimer=null, preloadIdleId=null, preloadGeneration=0, preloadTimers=[];
+function cancelScheduledPreload(){
+  preloadGeneration++;
+  if(preloadTimer!==null){ clearTimeout(preloadTimer); preloadTimer=null; }
+  if(preloadIdleId!==null && 'cancelIdleCallback' in window){ cancelIdleCallback(preloadIdleId); preloadIdleId=null; }
+  preloadTimers.forEach(timer => clearTimeout(timer));
+  preloadTimers=[];
+}
+async function preloadOriginals(index, generation=preloadGeneration){
+  // Navigation uses step(+1/-1), so warm the forward neighbour first.  Keep
+  // this sequential: four 8–12 MB downloads in parallel make the image the
+  // user is viewing slower, especially on a remote center host.
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const slowNetwork = connection && (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || ''));
+  const offsets=slowNetwork ? [1] : [1, -1, 2, -2];
+  for(const offset of offsets){
+    if(generation !== preloadGeneration) return;
+    const target=flatList[index + offset];
+    if(!target) continue;
+    try { await cacheOriginal(target); } catch(e) { /* next neighbour may still work */ }
+  }
+}
+function schedulePreload(index){
+  cancelScheduledPreload();
+  const generation=preloadGeneration;
+  // Start shortly after the current request is issued, rather than waiting
+  // for the current image to finish.  The sequential queue keeps this from
+  // becoming a bandwidth burst and makes the next image ready earlier.
+  const run=()=>{ preloadIdleId=null; preloadTimer=null; preloadOriginals(index,generation); };
+  if('requestIdleCallback' in window) preloadIdleId=requestIdleCallback(run,{timeout:260});
+  else preloadTimer=setTimeout(run,160);
+}
+function openLbPath(path){ const i=flatList.findIndex(im=>im.path===path); if(i>=0) openLb(i); }
+function openLb(i){
+  if(!Number.isInteger(i) || !flatList[i]) return;
+  lbIndex=i; lbZoom=LB_DEFAULT; document.getElementById('lightbox').classList.add('on'); resetLbScroll(); updateLb(); schedulePreload(i);
+}
+function closeLb(){
+  lightboxRequestId++;
+  cancelScheduledPreload();
+  document.getElementById('lightbox').classList.remove('on');
+  const stage=document.getElementById('lb-stage'); stage.removeAttribute('data-loading');
+  const image=document.getElementById('lb-img'); image.onerror=null; image.src=LB_PLACEHOLDER; image.classList.remove('lb-thumb');
+}
+function thumbnailUrl(im){ return `/api/screenshot/thumb?path=${encodeURIComponent(im.path)}&size=320`; }
+function resetLbScroll(){
+  const stage=document.getElementById('lb-stage');
+  if(stage){ stage.scrollTop=0; stage.scrollLeft=0; }
+}
+function setLbSource(image, url, className=''){
+  image.onerror=()=>{ image.onerror=null; image.src=LB_PLACEHOLDER; image.className=''; };
+  image.className=className;
+  image.src=url;
+}
+async function updateLb(){
+  const index=lbIndex, im=flatList[index]; if(!im) return;
+  const requestId = ++lightboxRequestId;
+  const stage=document.getElementById('lb-stage'), image=document.getElementById('lb-img');
+  // Switching to another image must never retain the previous image's
+  // vertical position; otherwise a complete original looks truncated.
+  resetLbScroll();
+  stage.dataset.loading='1'; image.alt='正在加载原图…';
+  // Keep the already small thumbnail visible while the original is fetched.
+  // Never clear src: an empty src makes Chromium render the broken-image icon.
+  setLbSource(image, thumbnailUrl(im), 'lb-thumb');
+  const file=im.file||'截图';
+  document.getElementById('lb-title').textContent=`${im.brand} · ${im.date} · ${file.replace(/\.\w+$/,'')}（${index+1}/${flatList.length}）`;
+  applyZoom();
+  try {
+    const cachedUrl = await cacheOriginal(im);
+    if(requestId === lightboxRequestId && document.getElementById('lightbox').classList.contains('on')) {
+      setLbSource(image, cachedUrl || originalUrl(im)); image.alt=im.file||'截图'; stage.removeAttribute('data-loading'); trimOriginalObjects();
+    }
+  } catch(e) {
+    if(requestId === lightboxRequestId && document.getElementById('lightbox').classList.contains('on')) {
+      setLbSource(image, thumbnailUrl(im), 'lb-thumb'); image.alt=im.file||'截图'; stage.dataset.loading='error';
+    }
+  }
+}
+function applyZoom(){ document.getElementById('lb-img').style.width=(lbZoom*100)+'%'; document.getElementById('lb-zoom-label').textContent=Math.round(lbZoom*100)+'%'; }
+function step(d){ if(!flatList.length) return; lbIndex=(lbIndex+d+flatList.length)%flatList.length; lbZoom=LB_DEFAULT; resetLbScroll(); updateLb(); schedulePreload(lbIndex); }
+function zoomIn(){ lbZoom=Math.min(LB_MAX,+(lbZoom*1.25).toFixed(2)); applyZoom(); }
+function zoomOut(){ lbZoom=Math.max(LB_MIN,+(lbZoom*0.8).toFixed(2)); applyZoom(); }
+function zoomReset(){ lbZoom=LB_DEFAULT; applyZoom(); }
+document.addEventListener('keydown',e=>{ if(!document.getElementById('lightbox').classList.contains('on')) return; if(e.key==='ArrowLeft')step(-1); if(e.key==='ArrowRight')step(1); if(e.key==='Escape')closeLb(); });
+// 原图只服务于当前页面会话：关闭页面时清理，下一次打开时也会清理上次异常退出的残留。
+function clearOriginalCache(){
+  if(!('caches' in window)) return;
+  originalCacheReady = null;
+  originalCacheClearing = caches.delete(ORIGINAL_CACHE_NAME).catch(() => false);
+  for(const url of originalObjectUrls.values()) URL.revokeObjectURL(url);
+  originalObjectUrls.clear(); originalLoads.clear();
+}
+function clearThumbnailObjectUrls(){
+  for(const url of thumbObjectUrls.values()) URL.revokeObjectURL(url);
+  thumbObjectUrls.clear(); thumbLoads.clear(); thumbCacheReady=null;
+}
+window.addEventListener('pagehide', clearThumbnailObjectUrls);
+window.addEventListener('beforeunload', clearThumbnailObjectUrls);
+window.addEventListener('pagehide', clearOriginalCache);
+window.addEventListener('beforeunload', clearOriginalCache);
+clearOriginalCache();
+let touchX=null;
+document.getElementById('lb-stage').addEventListener('touchstart',e=>{touchX=e.touches[0].clientX;});
+document.getElementById('lb-stage').addEventListener('touchend',e=>{ if(touchX===null)return; const dx=e.changedTouches[0].clientX-touchX; if(Math.abs(dx)>50) step(dx<0?1:-1); touchX=null; });
+// 触摸板手势：双指捏合缩放（ctrlKey 的 wheel 即捏合），双指滚动移动图片
+document.getElementById('lb-stage').addEventListener('wheel', e => {
+  if (e.ctrlKey) {
+    e.preventDefault();
+    const f = e.deltaY < 0 ? 1.1 : 0.9;
+    lbZoom = Math.min(LB_MAX, Math.max(LB_MIN, +(lbZoom * f).toFixed(2)));
+    applyZoom();
+  }
+}, { passive: false });
+
+// 删除
+function toggleSel(cb){ const p=cb.getAttribute('data-path'); cb.checked?selected.add(p):selected.delete(p); document.getElementById('btn-del').disabled=selected.size===0; }
+async function deleteSelected(){ if(!selected.size)return; if(!confirm(`删除选中的 ${selected.size} 张截图？`))return; try{ const d=await apiJson('/api/screenshot/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paths:[...selected]})}); selected.clear(); document.getElementById('btn-del').disabled=true; if(d.skipped) alert(`已删除 ${d.deleted||0} 张，跳过 ${d.skipped} 张只读截图。`); await load(true); }catch(e){showApiError(e,'删除失败');} }
+async function delOne(path){ if(!confirm('删除这张截图？'))return; try{ const d=await apiJson('/api/screenshot/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paths:[path]})}); if(d.skipped) alert('这张截图属于其他账号，只能查看，不能删除。'); await load(true); }catch(e){showApiError(e,'删除失败');} }
+
+// 触发截图
+async function openCapture(){
+  let d; try{ d = await apiJson('/api/screenshot/shops'); }catch(e){ showApiError(e,'加载店铺失败'); return; }
+  const shops = d.shops||[];
+  document.getElementById('cap-shop').innerHTML = shops.map(s=>`<option>${esc(s.name)}</option>`).join('');
+  document.getElementById('capture-modal').classList.add('on');
+}
+function closeCapture(){ document.getElementById('capture-modal').classList.remove('on'); }
+let captureSubmitting=false;
+async function captureAll(){ if(captureSubmitting||!confirm('立即对所有店铺截图？'))return; const button=document.querySelector('#capture-modal button[onclick="captureAll()"]'); captureSubmitting=true; if(button)button.disabled=true; try{ await apiJson('/api/screenshot/capture',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}); closeCapture(); alert('已开始截图，可在「进度」查看'); }catch(e){showApiError(e,'启动截图失败');} finally{captureSubmitting=false; if(button)button.disabled=false;} }
+async function captureShop(){ const shop=document.getElementById('cap-shop').value; if(!shop)return; try{ await apiJson('/api/screenshot/capture',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({shop})}); closeCapture(); alert(`已开始截图「${shop}」`); }catch(e){showApiError(e,'启动截图失败');} }
+async function captureUrl(){ const url=document.getElementById('cap-url').value.trim(); const name=document.getElementById('cap-name').value.trim(); if(!url){alert('请输入链接');return;} try{ await apiJson('/api/screenshot/capture',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,name:name||undefined})}); closeCapture(); alert('已开始截图该链接'); }catch(e){showApiError(e,'启动截图失败');} }
+let loginTimer=null;
+async function doLogin(){
+  let d;
+  try{ d=await apiJson('/api/screenshot/login',{method:'POST'}); }catch(e){ showApiError(e,'无法通知 Agent，请确认 Agent 正在运行'); return; }
+  if(d.error){alert(d.error);return;}
+  document.getElementById('login-modal').classList.add('on');
+  document.getElementById('login-hint').textContent='正在打开本机登录浏览器，请完成扫码后点击“完成登录”。';
+  clearInterval(loginTimer);
+  loginTimer=setInterval(async()=>{
+    try{
+      const s=await apiJson('/api/screenshot/login/status');
+      if(s.error || (s.job_id===d.job_id && !s.running && !s.logged_in)){
+        document.getElementById('login-hint').textContent=s.error || 'Agent 未能打开登录浏览器，请确认 Agent 正在运行并重试。';
+        clearInterval(loginTimer);
+      }
+    }catch(e){}
+  },1500);
+}
+async function completeLogin(){ clearInterval(loginTimer); try{ await apiJson('/api/screenshot/login/done',{method:'POST'}); document.getElementById('login-modal').classList.remove('on'); alert('登录态已保存'); }catch(e){showApiError(e,'登录态保存失败');} }
+async function openImagesFolder(){ try{ const d=await apiJson('/api/screenshot/open-folder',{method:'POST'}); if(!d.ok) alert('打开文件夹失败'); }catch(e){showApiError(e,'打开文件夹失败');} }
+
+// 店铺管理
+async function openShops(){ try{ const d=await apiJson('/api/screenshot/shops'); renderShops(d.shops||[]); document.getElementById('shops-modal').classList.add('on'); }catch(e){showApiError(e,'加载店铺失败');} }
+function closeShops(){ document.getElementById('shops-modal').classList.remove('on'); }
+function renderShops(shops){ document.getElementById('shop-list').innerHTML = shops.length?shops.map(s=>`<div class="shop"><div><div>${esc(s.name)}</div><div class="url">${esc(s.url)}</div></div><span class="del" onclick="delShop('${esc(s.name)}')">删除</span></div>`).join(''):'<div class="empty">暂无店铺</div>'; }
+async function addShop(){ const name=document.getElementById('new-name').value.trim(),url=document.getElementById('new-url').value.trim(); if(!name||!url){alert('名称和链接不能为空');return;} try{ const d=await apiJson('/api/screenshot/shops',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,url})}); if(d.error){alert(d.error);return;} document.getElementById('new-name').value='';document.getElementById('new-url').value='';openShops(); }catch(e){showApiError(e,'添加店铺失败');} }
+async function delShop(name){ if(!confirm(`删除店铺「${name}」？`))return; try{ await apiJson('/api/screenshot/shops/'+encodeURIComponent(name),{method:'DELETE'}); openShops(); }catch(e){showApiError(e,'删除店铺失败');} }
+
+// 定时任务（每周几 + 几点）
+const WEEKDAY_NAMES = {1:'周一',2:'周二',3:'周三',4:'周四',5:'周五',6:'周六',7:'周日'};
+let selectedWeekdays = [1,2,3,4,5,6,7];
+async function openScheduler(){ document.getElementById('fp-scheduler').classList.add('on'); await loadScheduler(); }
+function closeScheduler(){ document.getElementById('fp-scheduler').classList.remove('on'); }
+function toggleWdPopup(e){ e.stopPropagation(); document.getElementById('wd-menu').classList.toggle('open'); }
+function onWdChange(){ selectedWeekdays = [...document.querySelectorAll('#wd-menu input:checked')].map(i=>parseInt(i.value)); updateWdLabel(); }
+function updateWdLabel(){ document.getElementById('wd-label').textContent = selectedWeekdays.length===7 ? '每天' : (selectedWeekdays.length ? selectedWeekdays.map(d=>WEEKDAY_NAMES[d]).join('、') : '未选择'); }
+function renderWdMenu(){ document.querySelectorAll('#wd-menu input').forEach(cb=>{ cb.checked = selectedWeekdays.includes(parseInt(cb.value)); }); updateWdLabel(); }
+async function loadScheduler(){ try{ const d=await apiJson('/api/screenshot/scheduler/status'); document.getElementById('sch-status').textContent=!d.installed?'未安装':(d.running?'运行中':'已安装'); document.getElementById('sch-status').style.color=d.running?'var(--success)':'var(--text)'; const s=d.schedule||d||{}; selectedWeekdays=s.weekdays||[1,2,3,4,5,6,7]; document.getElementById('sch-hour').value=s.hour??9; document.getElementById('sch-minute').value=s.minute??0; renderWdMenu(); const daysText=selectedWeekdays.map(d=>WEEKDAY_NAMES[d]).join('、'); document.getElementById('sch-detail').textContent=d.installed?`已设定：${daysText} ${s.hour}:${String(s.minute).padStart(2,'0')}${d.last_code!=null?' · 上次：'+(d.last_code===0?'成功':'失败'):''}`:'尚未安装定时截图'; }catch(e){showApiError(e,'读取定时任务失败');} }
+async function installScheduler(){ const hour=parseInt(document.getElementById('sch-hour').value)||0; const minute=parseInt(document.getElementById('sch-minute').value)||0; try{ const d=await apiJson('/api/screenshot/scheduler/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({weekdays:selectedWeekdays,hour,minute,enabled:true})}); const verified=await apiJson('/api/screenshot/scheduler/status'); if(!d.ok||!verified.enabled){ alert('定时任务未成功启用，请稍后重试'); } else { alert('定时任务已安装'); } await loadScheduler(); }catch(e){showApiError(e,'定时任务设置失败');} }
+async function uninstallScheduler(){ if(!confirm('卸载定时截图任务？'))return; try{ await apiJson('/api/screenshot/scheduler/uninstall',{method:'POST'}); await loadScheduler(); }catch(e){showApiError(e,'卸载定时任务失败');} }
+
+// 进度 + 暂停/恢复
+let progTimer=null, paused=false, progressPollInFlight=false, lastProgressRunning=null;
+function openProgress(){ document.getElementById('fp-progress').classList.add('on'); clearInterval(progTimer); pollProgress(); progTimer=setInterval(pollProgress,1500); }
+function closeProgress(){ document.getElementById('fp-progress').classList.remove('on'); clearInterval(progTimer); progTimer=null; }
+async function togglePause(){ try{ await apiJson(paused?'/api/screenshot/capture/resume':'/api/screenshot/capture/pause',{method:'POST'}); pollProgress(); }catch(e){showApiError(e,'更新截图任务状态失败');} }
+async function pollProgress(){
+  if(progressPollInFlight || document.visibilityState !== 'visible') return;
+  progressPollInFlight=true;
+  try{
+    const [s,p]=await Promise.all([
+      apiJson('/api/screenshot/capture/status'),
+      apiJson('/api/screenshot/progress')
+    ]);
+    const running=!!s.running; paused=!!s.paused;
+    document.getElementById('pg-status').textContent=running?(paused?'已暂停':(s.source==='scheduled'?'定时截图中…':'截图中…')):'空闲';
+    document.getElementById('pg-status').style.color=running?'var(--fail)':'var(--success)';
+    const btn=document.getElementById('btn-pause');
+    btn.style.display=running&&s.source!=='scheduled'?'':'none'; btn.textContent=paused?'继续':'暂停';
+    const total=p.total||0,cur=p.current||0, pct=total?Math.round(cur/total*100):0;
+    document.getElementById('pg-bar').style.width=pct+'%';
+    document.getElementById('pg-shop').textContent=total?` ${cur}/${total}`:'';
+    const prefix=s.source==='scheduled'?'定时截图：':'';
+    document.getElementById('pg-detail').textContent=running?(prefix+(p.stage || (p.shop?`正在截图：${p.shop}`:'已接单，等待 Agent 上报进度…'))):'当前没有截图任务';
+    if(lastProgressRunning === true && !running) load();
+    lastProgressRunning=running;
+  }catch(e){} finally { progressPollInFlight=false; }
+}
+
+document.addEventListener('click', (e) => { const m = document.getElementById('wd-menu'); if (m && m.classList.contains('open') && !m.contains(e.target)) m.classList.remove('open'); });
+
+// 二级窗口自由拖动（仿违禁词排查）：Pointer Events 作用于 [data-drag]（面板头 / 模态框标题）
+(function(){
+  function initDrag(){
+    document.addEventListener("pointerdown", function(e){
+      const head = e.target.closest("[data-drag]");
+      if(!head) return;
+      let el = document.getElementById(head.getAttribute("data-drag"));
+      if(!el) return;
+      // 模态框：拖遮罩里的 .modal 窗口本体
+      if(el.classList.contains("modal-mask")){
+        const m = el.querySelector(".modal");
+        if(!m) return;
+        el = m; el.style.position = "fixed"; el.style.margin = "0";
+      }
+      const rect = el.getBoundingClientRect();
+      const ox = e.clientX - rect.left, oy = e.clientY - rect.top;
+      const onMove = function(ev){
+        // 仅限制顶部：不能拖过页面顶，否则会被集合页标题栏遮住，无法拖动/关闭
+        el.style.left = (ev.clientX - ox) + "px";
+        el.style.top = Math.max(0, ev.clientY - oy) + "px";
+        el.style.right = "auto";
+        el.style.transform = "none";
+      };
+      const onUp = function(){
+        document.removeEventListener("pointermove", onMove);
+        document.removeEventListener("pointerup", onUp);
+      };
+      document.addEventListener("pointermove", onMove);
+      document.addEventListener("pointerup", onUp);
+      e.preventDefault();
+    });
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", initDrag);
+  else initDrag();
+})();
+
+// 与集合页同步暗色/浅色模式 + 主题颜色
+function applyTheme(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('theme')==='dark'?'dark':'light'); }
+function lightenHex(hex, amt){
+  hex = String(hex||'').replace('#','').trim();
+  if(!/^[0-9a-fA-F]{6}$/.test(hex)) hex = '4f6ef7';
+  const n = parseInt(hex,16), r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  const l = c => Math.round(c + (255-c)*amt);
+  return '#'+[l(r),l(g),l(b)].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+function applyAccent(){
+  const acc = localStorage.getItem('accent') || 'indigo';
+  const root = document.documentElement;
+  root.setAttribute('data-accent', acc);
+  if(acc === 'custom'){
+    const hex = localStorage.getItem('accentCustom') || '#4f6ef7';
+    root.style.setProperty('--accent-custom', hex);
+    root.style.setProperty('--accent-custom-dark', lightenHex(hex, 0.35));
+  } else {
+    root.style.removeProperty('--accent-custom');
+    root.style.removeProperty('--accent-custom-dark');
+  }
+}
+window.addEventListener('storage', e => { if(e.key==='theme') applyTheme(); else if(e.key==='accent') applyAccent(); });
+applyTheme(); applyAccent();
+
+load(true);
+loadTimer = setInterval(() => load(false),30000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') load(true); });
+</script>
+</body>
+</html>

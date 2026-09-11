@@ -1,0 +1,63 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Runtime data, databases, caches, logs and browser state
+data/
+storage/
+cache/
+logs/
+browser_state/
+update-staging/
+update-supervisor/
+update-backups/
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.cookie
+state.json
+agent.json
+
+# Python and local tooling
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.gradle/
+.coverage
+htmlcov/
+.DS_Store
+.codex/
+.planning/
+.agents/
+
+# Generated distributions and build output
+build/
+dist/
+*.exe
+*.dmg
+*.pkg
+*.zip
+*.7z
+*.ptmigration.zip
+*.ptcenter.zip
+
+# Business source exports and screenshots
+*.xlsx
+*.xls
+*.xlsm
+mobile/releases/
+mobile/screenshots/
+mobile/screenshots-*/
+tests/artifacts/

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Keep the native client visually aligned with the browser admin shell. -->
+    <color name="pt_primary">#4F6EF7</color>
+    <color name="pt_primary_dark">#3F59D6</color>
+    <color name="pt_secondary">#7189F8</color>
+    <color name="pt_accent">#6D5CE7</color>
+    <color name="pt_background">#F4F5F7</color>
+    <color name="pt_surface">#FFFFFF</color>
+    <color name="pt_surface_muted">#F7F8FA</color>
+    <color name="pt_nav">#232C3D</color>
+    <color name="pt_nav_deep">#1E2634</color>
+    <color name="pt_nav_text">#AAB4C5</color>
+    <color name="pt_text">#1E2430</color>
+    <color name="pt_text_muted">#5B6472</color>
+    <color name="pt_text_faint">#8A93A3</color>
+    <color name="pt_border">#E6E8EC</color>
+    <color name="pt_border_strong">#D5D8DE</color>
+    <color name="pt_success">#16A34A</color>
+    <color name="pt_warning">#B7791F</color>
+    <color name="pt_error">#DC2626</color>
+    <color name="pt_white">#FFFFFF</color>
+</resources>

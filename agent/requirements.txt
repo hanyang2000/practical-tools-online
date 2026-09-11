@@ -1,0 +1,8 @@
+requests>=2.32,<3
+urllib3>=1.26.19,<2
+PyYAML>=6.0,<7
+Pillow>=10,<12
+patchright>=1.60,<2
+keyring>=25.0,<26
+rapidocr_onnxruntime==1.4.4
+pyinstaller>=6.10,<7
